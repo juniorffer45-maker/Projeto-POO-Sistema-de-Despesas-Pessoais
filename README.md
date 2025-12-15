@@ -4,7 +4,7 @@
 
 ## Integrantes da Equipe
 ##### -- Beatriz Benigno de Vasconcelos(2025013076) - Construção das Classes GerenciadorFinanças e OrçamentoMensal 
-##### -- Aldemir Ferreira da Silva Junior(2025012892) - Construção das Classes Categoria e Lançamento
+##### -- Aldemir Ferreira da Silva Junior(2025012892) - Construção das Classes Categoria, Lançamento e Alerta
 ##### -- Ana Karla Pontes de Souza(2025012954) - Construção da Classe 
 ##### -- João Paulo Lima David(2025013441) - Construção da Classe Configuração
 ##### -- Maria Ivanilda Irineu de Lima(2025013610) - Construção da Classe Despesa
