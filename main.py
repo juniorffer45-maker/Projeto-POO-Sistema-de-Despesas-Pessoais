@@ -59,10 +59,10 @@ class Lançamento:
       print("Data esta no formato errado")
     self._data = nova_data
 
-  def __str__(self)
+  def __str__(self):
     pass
 
-  def __repr__(self)
+  def __repr__(self):
     pass
     
   def __eq__(self):
