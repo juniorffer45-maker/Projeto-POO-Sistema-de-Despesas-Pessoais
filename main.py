@@ -39,23 +39,23 @@ class Lançamento:
     self.forma_de_pagamento = forma_de_pagamento
     self.status = status
 
-  @property
+  @property # Getter para o valor
   def valor(self):
     return self._valor
   
-  @valor.setter
+  @valor.setter # Setter para o valor
   def valor(self, novo_valor):
     if not novo_valor and novo_valor < 0:
       print("O valor não pode estar vazio ou ser menor que 0")
     self._valor = novo_valor
 
-  @property
+  @property # Getter para a data
   def data(self):
     return self._data
 
-  @data.setter
+  @data.setter # Setter para a data
   def data(self, nova_data):
-    if not nova_data:
+    if not isinstance(nova_data, date):
       print("Data esta no formato errado")
     self._data = nova_data
 
@@ -78,13 +78,13 @@ class Lançamento:
     pass
 
   def marcar_como_pago(self):
-    pass
+    self.status = "PAGO"
 
   def marcar_como_pendente(self):
-    pass
+    self.status = "PENDENTE"
 
   def esta_pago(self):
-    pass
+    return self.status == "PAGO"
 
   
   
