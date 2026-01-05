@@ -59,22 +59,22 @@ class Lançamento:
       print("Data esta no formato errado")
     self._data = nova_data
 
-  def __str__(self):
+  def __str__(self): #Em construção
     pass
 
-  def __repr__(self):
+  def __repr__(self): #Em construção
     pass
     
-  def __eq__(self):
+  def __eq__(self): #Em construção
     pass
 
-  def __it__(self):
+  def __it__(self): #Em construção
     pass
 
-  def add(self, outro):
+  def add(self, outro): #Em construção
     pass
 
-  def to_dict(self):
+  def to_dict(self): #Em construção
     pass
 
   def marcar_como_pago(self):
