@@ -14,8 +14,7 @@
 
 ##### Class: Categoria
 ##### Atributos: id, nome, tipo, limite_mensal,  descricao
-##### Metodos: __init__(self, nome, tipo, limite_mensal=None, descricao="") 
-@property nome(self), @nome.setter(self, novo_nome), @property limite_mensal(self), @limite_mensal.setter(self, novo_limite), to_dict(self)  
+##### Metodos: __init__(self, nome, tipo, limite_mensal=None, descricao=""), @property nome(self), @nome.setter(self, novo_nome), @property limite_mensal(self), @limite_mensal.setter(self, novo_limite), to_dict(self)  
 -
 ##### Class: Lançamento
 ##### Atributos: valor, categoria, data, descrição, forma de pagamento, status
