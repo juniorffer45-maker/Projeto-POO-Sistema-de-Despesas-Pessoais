@@ -9,10 +9,13 @@
 ##### -- João Paulo Lima David(2025013441) - Banco de Dados
 ##### -- Maria Ivanilda Irineu de Lima(2025013610) - Front-End
 
-## Classes do Sistema
+
+##### Classes: Cadastro de categorias, Lançamento de receitas e despesas, Orçamento mensal, Relatórios e estatísticas, Configuracoes, Alertas.
+
 ##### Class: Categoria
 ##### Atributos: id, nome, tipo, limite_mensal,  descricao
-##### Metodos: __init__(self, nome, tipo, limite_mensal=None, descricao=""),  @property nome(self), @nome.setter(self, novo_nome), @property limite_mensal(self), @limite_mensal.setter(self, novo_limite), to_dict(self)  
+##### Metodos: __init__(self, nome, tipo, limite_mensal=None, descricao="") 
+@property nome(self), @nome.setter(self, novo_nome), @property limite_mensal(self), @limite_mensal.setter(self, novo_limite), to_dict(self)  
 -
 ##### Class: Lançamento
 ##### Atributos: valor, categoria, data, descrição, forma de pagamento, status
@@ -26,19 +29,15 @@
 ##### Atributos: self
 ##### Metodos: __init__(self, ...), @valor.setter(self, novo_valor), validar_limite(self), validar_alto_valor(self, limite_alto)
 -
-##### Class: GerenciadorFinanças
-##### Atributos: categorias, orcamentos, configuracoes, alertas_log  
-##### Metodos: carregar_dados(self), salvar_dados(self), cadastrar_categoria(...), adicionar_lancamento(...), gerar_relatorio_comparativo(), identificar_mes_economico(), remover_categoria(id), excluir_lancamento(id).
--
 ##### Class: OrçamentoMensal
 ##### Atributos: mes, ano, lançamentos
 ##### Metodos: __init__(self, mes, ano), adicionar_lancamento(self, lancamento), calcular_total_receitas(self), calcular_total_despesas(self), calcular_saldo(self), verificar_deficit(self), gerar_relatorio(self)
 -
 ##### Class: Alerta
 ##### Atributos: tipo, mensagem, data, lancamento
-##### Metodos: __init__(self, tipo, mensagem, data, lancamento=None), __str__(self)
+##### Metodos: __init__(self, tipo, mensagem, data, lancamento=None)
 -
 ##### Class: Configurações
 ##### Atributos: alerta_alto_gasto, meses_comparativo, meta_economia_percentual
-##### Metodos:  __init__(self, filename='settings.json'), validar_parametros(self), alterar_meta_economia(self, nova_meta)
+##### Metodos: __init__(self, filename='settings.json'), validar_parametros(self), alterar_meta_economia(self, nova_meta)
 
