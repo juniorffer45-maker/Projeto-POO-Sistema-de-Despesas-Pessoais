@@ -13,7 +13,10 @@
 ##### Classes: Cadastro de categorias, Lançamento de receitas e despesas, Orçamento mensal, Relatórios e estatísticas, Configuracoes, Alertas.
 
 -
-
+##### Class: GerenciadorFinanças
+##### Atributos: categorias, orcamentos, configuracoes, alertas 
+##### Metodos: carregar_dados(self), salvar_dados(self), cadastrar_categoria(...), adicionar_lancamento(...), gerar_relatorio_comparativo(), identificar_mes_economico(), remover_categoria(id), excluir_lancamento(id)
+-
 ##### Class: Categoria
 ##### Atributos: id, nome, tipo, limite_mensal,  descricao
 ##### Metodos: __init__(self, nome, tipo, limite_mensal=None, descricao=""), @property nome(self), @nome.setter(self, novo_nome), @property limite_mensal(self), @limite_mensal.setter(self, novo_limite), to_dict(self)  
