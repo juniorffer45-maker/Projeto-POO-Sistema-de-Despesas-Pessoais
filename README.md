@@ -36,8 +36,7 @@
 -
 ##### Class: RelatoriosEstatisticas
 ##### Atributos: orcamentos, OrcamentoMensal
-##### Metodos: __init__(self, lista_orcamentos), total_por_categoria(self, mes, ano), despesas_por_forma_pagamento(self, mes, ano), calcular_percentuais_categoria(self, mes, ano),
-mes_mais_economico(self), comparativo_ultimos_3_meses(self, mes_atual, ano_atual), _buscar_orcamento(self, mes, ano), _subtrair_meses(self, mes, ano, n)
+##### Metodos: __init__(self, lista_orcamentos), total_por_categoria(self, mes, ano), despesas_por_forma_pagamento(self, mes, ano), calcular_percentuais_categoria(self, mes, ano), mes_mais_economico(self), comparativo_ultimos_3_meses(self, mes_atual, ano_atual), _buscar_orcamento(self, mes, ano), _subtrair_meses(self, mes, ano, n)
 -
 ##### Class: Alerta
 ##### Atributos: tipo, mensagem, data, lancamento
