@@ -34,6 +34,11 @@
 ##### Atributos: mes, ano, lançamentos
 ##### Metodos: __init__(self, mes, ano), adicionar_lancamento(self, lancamento), calcular_total_receitas(self), calcular_total_despesas(self), calcular_saldo(self), verificar_deficit(self), gerar_relatorio(self)
 -
+##### Class: RelatoriosEstatisticas
+##### Atributos: orcamentos, OrcamentoMensal
+##### Metodos: __init__(self, lista_orcamentos), total_por_categoria(self, mes, ano), despesas_por_forma_pagamento(self, mes, ano), calcular_percentuais_categoria(self, mes, ano),
+mes_mais_economico(self), comparativo_ultimos_3_meses(self, mes_atual, ano_atual), _buscar_orcamento(self, mes, ano), _subtrair_meses(self, mes, ano, n)
+-
 ##### Class: Alerta
 ##### Atributos: tipo, mensagem, data, lancamento
 ##### Metodos: __init__(self, tipo, mensagem, data, lancamento=None)
