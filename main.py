@@ -1,7 +1,7 @@
 class Categoria:
 
-  def __init__(self, nome, tipo, limite_mensal = None, descricao = "")
-    self.nome = none
+  def __init__(self, nome, tipo, limite_mensal=None, descricao="")
+    self.nome = None
     self.tipo = tipo
     self.limite_mensal = limite_mensal
     self.descricao = descricao
@@ -13,7 +13,7 @@ class Categoria:
   @nome.setter # Setter para o nome
   def nome(self, novo_nome):
     if not novo_nome:
-      print("O nome não pode estar vazio")
+      raise ValueError("O nome da categoria não pode estar vazio")
     self._nome = novo_nome
 
   @property # Getter para o limite_mensal
@@ -58,24 +58,6 @@ class Lançamento:
     if not isinstance(nova_data, date):
       print("Data esta no formato errado")
     self._data = nova_data
-
-  def __str__(self): #Em construção
-    pass
-
-  def __repr__(self): #Em construção
-    pass
-    
-  def __eq__(self): #Em construção
-    pass
-
-  def __it__(self): #Em construção
-    pass
-
-  def add(self, outro): #Em construção
-    pass
-
-  def to_dict(self): #Em construção
-    pass
 
   def marcar_como_pago(self):
     self.status = "PAGO"
