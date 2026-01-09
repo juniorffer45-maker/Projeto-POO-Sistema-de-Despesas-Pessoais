@@ -75,7 +75,7 @@ class Lançamento:
     return self.status == "PAGO"
   
 #Como o objeto aparece para o USUÁRIO (ex: num print).
-  def __str__(self): #
+  def __str__(self): 
      return f"{self.data} - {self.categoria.nome} - R$ {self.valor:.2f}"
 
 #Como o objeto aparece para o PROGRAMADOR (ex: numa lista de depuração).
@@ -93,7 +93,7 @@ class Lançamento:
               self.categoria.nome == other.categoria.nome and
               self.data == other.data)
 
-#Define quem é MENOR que o outro (Less Than). Usado para ordenar (sort) por data.
+#Define quem é MENOR que o outro. Usado para ordenar (sort) por data.
   def __lt__(self, other):
      return self.data < other.data
 
@@ -103,11 +103,12 @@ class Lançamento:
         if type(self) != type(other):
             raise TypeError("Não é possível somar Receita com Despesa")
             
-        # 2. Retorna a soma dos valores (float)
+        #Retorna a soma dos valores (float)
         return self.valor + other.valor
   
 #CLASSES FILHAS (Herança)
-#A Receita e a Despesa herdam tudo de Lançamento. A vantagem disso é que se a gente precisar mudar como a 'Data' funciona, muda só na mãe e as filhas já aprendem automaticamente. Isso é Reaproveitamento de Código
+#A Receita e a Despesa herdam tudo de Lançamento. A vantagem disso é que se a gente precisar mudar como a 'Data' funciona, muda só na mãe e as filhas já aprendem automaticamente. 
+#Isso é Reaproveitamento de Código
   
 class Receita(Lançamento):
     def __init__(self, valor, categoria, data, forma_de_pagamento, status):
@@ -239,5 +240,6 @@ P: Por que usar raise ValueError nos Setters em vez de só dar um print('Erro')?
 R: Porque print só mostra texto na tela, mas o programa continua rodando errado. 
 O raise interrompe o programa imediatamente (Fail Fast). 
 É melhor o sistema parar e avisar o erro grave do que deixar passar um valor negativo que vai estragar todo o cálculo financeiro lá na frente.
+
 
 '''
