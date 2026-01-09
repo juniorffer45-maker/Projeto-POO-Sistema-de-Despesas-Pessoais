@@ -21,14 +21,13 @@ class Categoria:
     return self._limite_mensal
 
   @limite_mensal.setter # Setter para o limite_mensal
-  def limite_mensal(self, novo_limite)
-    if limite_mensal_novo is not None and novo_limite < 0:
-      print("O valor não pode ser negativo")
+  def limite_mensal(self, novo_limite):
+    if novo_limite is not None and novo_limite < 0:
+      raise ValueError ("O limite mensal não pode ser negativo")
     self._limite_mensal = novo_limite
-
-  def to_dict(self):
-    pass
-
+    
+  def __str__(self):
+      return self.nome
 
 class Lançamento:
 
@@ -46,7 +45,7 @@ class Lançamento:
   @valor.setter # Setter para o valor
   def valor(self, novo_valor):
     if not novo_valor and novo_valor < 0:
-      print("O valor não pode estar vazio ou ser menor que 0")
+      raise ValueError("O valor não pode estar vazio ou ser menor que 0")
     self._valor = novo_valor
 
   @property # Getter para a data
@@ -56,7 +55,7 @@ class Lançamento:
   @data.setter # Setter para a data
   def data(self, nova_data):
     if not isinstance(nova_data, date):
-      print("Data esta no formato errado")
+      raise TypeError("Data está no formato errado")
     self._data = nova_data
 
   def marcar_como_pago(self):
