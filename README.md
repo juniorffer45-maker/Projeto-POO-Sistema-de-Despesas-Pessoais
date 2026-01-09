@@ -10,7 +10,7 @@
 ##### -- Maria Ivanilda Irineu de Lima(2025013610) - Front-End
 
 -
-##### Classes: Gerenciador de Finanças, Cadastro de categorias, Lançamento de receitas e despesas, Orçamento mensal, Relatórios e estatísticas, Configuracoes, Alertas.
+##### Classes: Gerenciador de Finanças, Cadastro de Categorias, Lançamento de Receitas e Despesas, Orçamento Mensal, Relatórios e Estatísticas, Configuracoes, Alertas.
 
 -
 ##### Class: GerenciadorFinanças
