@@ -1,3 +1,5 @@
+from datetime import date
+
 class Categoria:
 
   def __init__(self, nome, tipo, limite_mensal=None, descricao="")
