@@ -9,7 +9,7 @@
 ##### -- João Paulo Lima David(2025013441) - Banco de Dados
 ##### -- Maria Ivanilda Irineu de Lima(2025013610) - Front-End
 
-# Uma ferramenta simples e eficiente para gerenciar sua vida financeira, permitindo o acompanhamento detalhado de entradas e saídas com relatórios automáticos e alerta de gastos.
+## Uma ferramenta simples e eficiente para gerenciar sua vida financeira, permitindo o acompanhamento detalhado de entradas e saídas com relatórios automáticos e alerta de gastos.
 
 #
 
