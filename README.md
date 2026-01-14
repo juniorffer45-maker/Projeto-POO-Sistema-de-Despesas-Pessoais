@@ -16,7 +16,7 @@
 -
 ##### Class: GerenciadorFinanças
 ##### Atributos: categorias, orcamentos, configuracoes, alertas 
-##### Metodos: carregar_dados(self), salvar_dados(self), cadastrar_categoria(...), adicionar_lancamento(...), gerar_relatorio_comparativo(), identificar_mes_economico(), remover_categoria(id), excluir_lancamento(id)
+##### Metodos: carregar_dados, salvar_dados, cadastrar_categoria, adicionar_lancamento, gerar_relatorio_comparativo, identificar_mes_economico, remover_categoria, excluir_lancamento.
 
 #### É o "chefe" do sistema. É ele quem salva os dados no arquivo JSON, carrega os dados quando o programa abre e decide para qual mês um novo gasto deve ir. Ele conecta todas as outras classes.
 -
