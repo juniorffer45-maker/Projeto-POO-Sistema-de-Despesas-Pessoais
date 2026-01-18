@@ -71,4 +71,12 @@
 ##### Metodos: __init__(self, filename='settings.json'), validar_parametros(self), alterar_meta_economia(self, nova_meta)
 
 #### Guarda as regras e configurações do usuário, como: "Quero ser avisado sempre que um gasto passar de R$ 500" ou "Minha meta é economizar 10% do que ganho".
+-
+
+##### Class: InterfaceCLI
+##### Atributos: gerenciador, usuario_logado, menu_ativo
+##### Metodos: exibir_menu_principal(), limpar_tela(), solicitar_dados_categoria(), solicitar_dados_lancamento(), exibir_relatorio_mensal(), exibir_alertas_ativos(), configurar_sistema()
+
+#### É a "ponte de comunicação". Ela não faz cálculos e não salva arquivos diretamente; ela apenas "pergunta ao usuário", "lê a resposta" e "pede ao Gerenciador para executar".
+
 
