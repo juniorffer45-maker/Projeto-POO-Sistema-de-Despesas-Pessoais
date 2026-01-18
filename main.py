@@ -84,7 +84,7 @@ class Lançamento:
   def __lt__(self, other):
      return self.data < other.data
   
-#CLASSE 
+#CLASSE BEATRIZ BENIGNO
   
 class Receita(Lançamento):
     def __init__(self, valor, categoria, data, forma_de_pagamento, status):
@@ -184,7 +184,125 @@ class OrcamentoMensal:
           return "Alerta: Seu saldo está negativo!"
        else:
           return "Saldo está positivo."
-       
+
+#CLASSE JOÃO PAULO
+
+class RelatoriosEstatisticas:
+    def __init__(self, lista_orcamentos):
+        """
+        Inicializa com uma lista de objetos OrcamentoMensal.
+        :param lista_orcamentos: list[OrcamentoMensal]
+        """
+        self.orcamentos = lista_orcamentos
+
+    def _buscar_orcamento(self, mes, ano):
+        """Método auxiliar para encontrar o orçamento de um mês/ano específico."""
+        for orc in self.orcamentos:
+            if orc.mes == mes and orc.ano == ano:
+                return orc
+        return None
+
+    def _subtrair_meses(self, mes, ano, n):
+        """Método auxiliar para calcular meses anteriores (ex: para comparativos)."""
+        mes_result = mes
+        ano_result = ano
+        for _ in range(n):
+            mes_result -= 1
+            if mes_result == 0:
+                mes_result = 12
+                ano_result -= 1
+        return mes_result, ano_result
+
+    def total_por_categoria(self, mes, ano):
+        """Calcula o total de despesas agrupadas por categoria (dados para gráfico de pizza)."""
+        orcamento = self._buscar_orcamento(mes, ano)
+        if not orcamento:
+            return {}
+        
+        totais = {}
+        for despesa in orcamento.despesas:
+            cat = despesa.categoria
+            totais[cat] = totais.get(cat, 0) + despesa.valor
+        return totais
+
+    def despesas_por_forma_pagamento(self, mes, ano):
+        """Agrupa despesas por forma de pagamento (crédito, débito, pix)."""
+        orcamento = self._buscar_orcamento(mes, ano)
+        if not orcamento:
+            return {}
+        
+        pagamentos = {}
+        for despesa in orcamento.despesas:
+            forma = despesa.forma_pagamento
+            pagamentos[forma] = pagamentos.get(forma, 0) + despesa.valor
+        return pagamentos
+
+    def calcular_percentuais_categoria(self, mes, ano):
+        """Calcula a porcentagem que cada categoria representa no total gasto."""
+        totais = self.total_por_categoria(mes, ano)
+        total_geral = sum(totais.values())
+        
+        if total_geral == 0:
+            return {}
+        
+        percentuais = {cat: (valor / total_geral) * 100 for cat, valor in totais.items()}
+        return percentuais
+
+    def mes_mais_economico(self):
+        """Identifica o mês com o menor total de despesas entre os orçamentos cadastrados."""
+        if not self.orcamentos:
+            return None
+        
+        # Encontra o orçamento com a menor soma de despesas
+        melhor_orcamento = min(self.orcamentos, key=lambda o: sum(d.valor for d in o.despesas))
+        return {"mes": melhor_melhor_orcamento.mes, "ano": melhor_orcamento.ano}
+
+    def comparativo_ultimos_3_meses(self, mes_atual, ano_atual):
+        """Cria um comparativo de gastos dos últimos 3 meses (incluindo o atual)."""
+        comparativo = {}
+        for i in range(3):
+            m, a = self._subtrair_meses(mes_atual + 1, ano_atual, i + 1) # Ajuste lógico
+            orcamento = self._buscar_orcamento(m, a)
+            if orcamento:
+                comparativo[f"{m}/{a}"] = sum(d.valor for d in orcamento.despesas)
+            else:
+                comparativo[f"{m}/{a}"] = 0
+        return comparativo
+
+#CLASSE MARIA IVANILDA
+
+class Configuracoes:
+    def __init__(self, filename="settings.json"):
+        self.filename = filename
+
+        # Configurações padrão
+        self.alerta_alto_gasto = 500.0               # valor em reais
+        self.meses_comparativo = 3                   # quantidade de meses
+        self.meta_economia_percentual = 10.0         # percentual (%)
+
+        # Se existir arquivo, pode ser carregado futuramente
+        self.validar_parametros()
+   
+    def validar_parametros(self):
+        if self.alerta_alto_gasto <= 0:
+            raise ValueError("O alerta de alto gasto deve ser maior que zero.")
+
+        if self.meses_comparativo <= 0:
+            raise ValueError("Meses de comparativo deve ser maior que zero.")
+
+        if not (0 <= self.meta_economia_percentual <= 100):
+            raise ValueError("Meta de economia deve estar entre 0 e 100%.")
+
+    def alterar_meta_economia(self, nova_meta):
+        if not isinstance(nova_meta, (int, float)):
+            raise TypeError("A meta de economia deve ser numérica.")
+
+        if nova_meta < 0 or nova_meta > 100:
+            raise ValueError("A meta de economia deve estar entre 0 e 100%.")
+
+        self.meta_economia_percentual = float(nova_meta)
+
+
 
 # ÁREA DE TESTES 
 
