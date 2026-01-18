@@ -1,6 +1,6 @@
 import json
 import os
-from datetime import date
+from datetime import date, datetime
 
 class GerenciadorFinanças:
     def __init__(self):
