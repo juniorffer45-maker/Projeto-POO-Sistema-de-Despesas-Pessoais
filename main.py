@@ -2,8 +2,6 @@ import json
 import os
 from datetime import date, datetime
 
-#CLASSE
-
 class GerenciadorFinanças:
     def __init__(self):
         self.categorias = {}
