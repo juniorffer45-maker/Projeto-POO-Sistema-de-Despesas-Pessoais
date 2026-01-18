@@ -18,8 +18,6 @@
 .
 .
 .
-##### Classes: Gerenciador de Finanças, Cadastro de Categorias, Lançamento de Receitas e Despesas, Orçamento Mensal, Relatórios e Estatísticas, Configuracoes, Alertas.
-
 -
 ##### Class: GerenciadorFinanças
 ##### Atributos: categorias, orcamentos, configuracoes, alertas 
