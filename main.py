@@ -2,7 +2,7 @@ import json
 import os
 from datetime import date, datetime
 
-#CLASSE BEATRIZ BENIGNO
+#CLASSE
 
 class GerenciadorFinanças:
     def __init__(self):
