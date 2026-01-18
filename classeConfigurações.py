@@ -1,40 +1,27 @@
-class Configurações:
-  def __init__(self, file_name = 'settings.json'):
-    self.file_name = file_name
-    self.alerta_alto_gasto = alerta_alto_gasto
-    self.meses_comparativo = meses_comparativo
-    self.meta_economia_percentual = meta_economia_percentual 
+  class Configuracoes:
+    def __init__(self, filename='settings.json'):
+        self.filename = filename
+        self.alerta_alto_gasto = 0.0
+        self.meta_economia_percentual = 0.0
+        self.carregar()
 
-  def validar_parametros(self): # Garante que as configurações façam sentido matemático
-    if self.meta_economia_percentual < 0 or self.meta_economia_percentual > 100:
-            print("Erro: A meta de economia deve estar entre 0 e 100%.")
-            return False
-        if self.alerta_alto_gasto < 0:
-            print("Erro: O valor de alerta não pode ser negativo.")
-            return False
-        return True    
+    def configurar_inicial(self):
+        print("CONFIGURAÇÃO INICIAL")
+        try:
+            self.alerta_alto_gasto = float(input("Valor para alerta de gasto alto (Ex: 1000): "))
+            self.meta_economia_percentual = float(input("Meta de economia % (Ex: 10): "))
+            self.salvar()
+        except ValueError:
+            print("Valores inválidos. Usando padrões: 1000 e 10%.")
+            self.alerta_alto_gasto, self.meta_economia_percentual = 1000.0, 10.0
 
-  def alterar_meta_de_economia(self, nova_meta): # Método específico para atualizar a meta com validação
-    valor_antigo = self.meta_economia_percentual
-        self.meta_economia_percentual = float(nova_meta)
-        
-        if self.validar_parametros():
-            self.salvar_configuracoes()
-            print(f"Meta de economia atualizada: {valor_antigo}% -> {nova_meta}%")
-        else:
-            self.meta_economia_percentual = valor_antigo # Reverte em caso de erro
-    
+    def salvar(self): # Salva os atributos atuais em um arquivo JSON separado
+        with open(self.filename, 'w') as f:
+            json.dump(self.__dict__, f, indent=4)
 
-  def salvar_configuracoes(self): # Salva os atributos atuais em um arquivo JSON separado
-    dados = {
-            "alerta_alto_gasto": self.alerta_alto_gasto,
-            "meses_comparativo": self.meses_comparativo,
-            "meta_economia_percentual": self.meta_economia_percentual
-        }
-        with open(self.filename, 'w', encoding='utf-8') as f:
-            json.dump(dados, f, indent=4)
-          
-  def carregar_configuracoes(self): # Lê o arquivo de texto e atualiza os atributos da classe.
-    pass
-      
-  
+    def carregar(self): # Lê o arquivo de texto e atualiza os atributos da classe.
+        if os.path.exists(self.filename):
+            with open(self.filename, 'r') as f:
+                dados = json.load(f)
+                self.alerta_alto_gasto = dados.get('alerta_alto_gasto', 1000.0)
+                self.meta_economia_percentual = dados.get('meta_economia_percentual', 10.0)
