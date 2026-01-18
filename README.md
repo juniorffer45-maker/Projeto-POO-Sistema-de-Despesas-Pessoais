@@ -13,7 +13,11 @@
 
 ##### PARA USAR O GERENCIADOR, VÁ EM SISTEMA.PY 
 
-
+.
+.
+.
+.
+.
 ##### Classes: Gerenciador de Finanças, Cadastro de Categorias, Lançamento de Receitas e Despesas, Orçamento Mensal, Relatórios e Estatísticas, Configuracoes, Alertas.
 
 -
