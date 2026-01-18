@@ -189,6 +189,21 @@ class OrcamentoMensal:
     #Se estiver tudo bem
         return None
 
+    def imprimir_extrato(self):
+        print(f"\n--- Extrato Mês {self.mes}/{self.ano} ---")
+        
+        # Se a lista estiver vazia, avisa o usuário
+        if not self.lancamentos:
+            print("(Nenhum lançamento registrado ainda)")
+            return
+
+        # Se tiver coisas, imprime uma por uma
+        for item in self.lancamentos:
+            print(f"{item.data} | {item.categoria.nome} | R$ {item.valor:.2f}")
+        
+        print("-" * 30)
+      
+
 #CLASSE JOÃO PAULO
 class Relatorios:
    def __init__(self, lista_orcamentos):
