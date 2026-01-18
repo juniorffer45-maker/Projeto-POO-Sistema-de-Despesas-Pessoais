@@ -363,5 +363,113 @@ class Configuracoes:
           self.meta_economia_percentual = valor_antigo
           print("Meta de economia não alterada devido a erro de validação.")
           
+#CLASSE BEATRIZ BENIGNO
 
+class GerenciadorFinanças:
+    def __init__(self):
+        self.categorias = {}
+        self.orcamentos = []
+        self.alertas = []
+        self.arquivo_dados = "dados_financeiros.json"
+        self.carregar_dados()
+        self.relatorios = Relatorios(self.orcamentos)
+
+    def cadastrar_categoria(self, nome, tipo, limite=None, desc=""):
+        self.categorias[nome] = Categoria(nome, tipo, limite, desc)
+        self.salvar_dados()
+
+    def adicionar_lancamento(self, valor, nome_cat, data_str, forma, status, tipo_classe):
+        dt = datetime.strptime(data_str, "%d/%m/%Y").date()
+        cat = self.categorias.get(nome_cat)
+        if not cat: raise ValueError("Categoria não existe!")
+
+        novo = tipo_classe(valor, cat, dt, forma, status)
+        
+        orc = self.relatorios.buscar_orcamento(dt.month, dt.year)
+        if not orc:
+            orc = OrcamentoMensal(dt.month, dt.year)
+            self.orcamentos.append(orc)
+        
+        orc.adicionar_lancamento(novo)
+        
+        # Lógica de Alerta de Saldo Negativo
+        if orc.calcular_saldo() < 0:
+            self.alertas.append(Alerta("CRÍTICO", f"Saldo negativo em {dt.month}/{dt.year}", date.today()))
+            
+        self.salvar_dados()
+
+    def salvar_dados(self):
+        # Simplificação para exemplo de salvamento JSON
+        dados = {
+            "categorias": {n: {"tipo": c.tipo, "limite": c.limite_mensal} for n, c in self.categorias.items()}
+        }
+        with open(self.arquivo_dados, 'w') as f:
+            json.dump(dados, f)
+
+    def carregar_dados(self):
+        if os.path.exists(self.arquivo_dados):
+            with open(self.arquivo_dados, 'r') as f:
+                dados = json.load(f)
+                for n, c in dados.get("categorias", {}).items():
+                    self.categorias[n] = Categoria(n, c['tipo'], c['limite'])
+
+#CLASSE MARIA IVANILDA
+
+class InterfaceCLI:
+    def __init__(self):
+        self.gerente = GerenciadorFinanças()
+
+    def exibir_menu(self):
+        while True:
+            print("\n" + "="*30)
+            print("   GERENCIADOR FINANCEIRO ")
+            print("="*30)
+            if self.gerente.alertas:
+                print(self.gerente.alertas[-1])
+            
+            print("1. Cadastrar Categoria")
+            print("2. Adicionar Receita")
+            print("3. Adicionar Despesa")
+            print("4. Ver Saldo do Mês")
+            print("0. Sair")
+            
+            op = input("\nEscolha uma opção: ")
+
+            if op == '1':
+                nome = input("Nome: ")
+                tipo = input("Tipo (Receita/Despesa): ")
+                limite = input("Limite (opcional): ")
+                self.gerente.cadastrar_categoria(nome, tipo, float(limite) if limite else None)
+                print("Categoria cadastrada!")
+
+            elif op in ['2', '3']:
+                try:
+                    v = float(input("Valor: R$ "))
+                    c = input("Categoria: ")
+                    d = input("Data (DD/MM/AAAA): ")
+                    f = input("Forma de Pagamento: ")
+                    tipo = Receita if op == '2' else Despesa
+                    self.gerente.adicionar_lancamento(v, c, d, f, "PAGO", tipo)
+                    print("Lançamento realizado!")
+                except Exception as e:
+                    print(f"❌ Erro: {e}")
+
+            elif op == '4':
+                m = int(input("Mês (1-12): "))
+                a = int(input("Ano (AAAA): "))
+                orc = self.gerente.relatorios.buscar_orcamento(m, a)
+                if orc:
+                    print(f"\nResumo {m}/{a}:")
+                    print(f"Saldo: R$ {orc.calcular_saldo():.2f}")
+                else:
+                    print("Nenhum dado encontrado.")
+
+            elif op == '0':
+                print("Até logo!")
+                break
+
+
+
+if __name__ == "__main__":
+    InterfaceCLI().exibir_menu()
 
