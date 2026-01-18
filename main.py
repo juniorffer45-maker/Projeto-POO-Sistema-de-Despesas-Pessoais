@@ -178,96 +178,140 @@ class OrcamentoMensal:
     def calcular_saldo(self):
        return self.calcular_total_receitas() - self.calcular_total_despesas()
     
-    def alerta_saldo_negativo(self):
-       saldo_atual = self.calcular_saldo()
-       if saldo_atual < 0:
-          return "Alerta: Seu saldo está negativo!"
-       else:
-          return "Saldo está positivo."
+    def verificar_alerta_saldo(self):
+        saldo_atual = self.calcular_saldo()
+        if saldo_atual < 0:
+           msg = f"Alerta: Saldo negativo de R$ {saldo_atual:.2f} no mês {self.mes}/{self.ano}"
+       
+           novo_alerta = Alerta("Crítico", msg, date.today())
 
-#CLASSE JOÃO PAULO
-
-class RelatoriosEstatisticas:
-    def __init__(self, lista_orcamentos):
-        """
-        Inicializa com uma lista de objetos OrcamentoMensal.
-        :param lista_orcamentos: list[OrcamentoMensal]
-        """
-        self.orcamentos = lista_orcamentos
-
-    def _buscar_orcamento(self, mes, ano):
-        """Método auxiliar para encontrar o orçamento de um mês/ano específico."""
-        for orc in self.orcamentos:
-            if orc.mes == mes and orc.ano == ano:
-                return orc
+           return novo_alerta
+    #Se estiver tudo bem
         return None
 
-    def _subtrair_meses(self, mes, ano, n):
-        """Método auxiliar para calcular meses anteriores (ex: para comparativos)."""
-        mes_result = mes
-        ano_result = ano
-        for _ in range(n):
-            mes_result -= 1
-            if mes_result == 0:
-                mes_result = 12
-                ano_result -= 1
-        return mes_result, ano_result
+#CLASSE JOÃO PAULO
+class Relatorios:
+   def __init__(self, lista_orcamentos):
+        self.lista_orcamentos = lista_orcamentos
+       
+   def buscar_orcamento(self, mes, ano):
+         for orcamento in self.lista_orcamentos:
+              if orcamento.mes == mes and orcamento.ano == ano:
+                return orcamento
+         
+         return None
+   
+   def total_categoria(self, mes, ano):
+        #busca o orçamento do mês e ano especificados
+        orcamento = self.buscar_orcamento(mes, ano)
+        #se não achou o orçamento, retorna dicionário vazio
+        if orcamento is None:
+            return {}
+      
+        totais = {}
 
-    def total_por_categoria(self, mes, ano):
-        """Calcula o total de despesas agrupadas por categoria (dados para gráfico de pizza)."""
-        orcamento = self._buscar_orcamento(mes, ano)
-        if not orcamento:
+        for lancamento in orcamento.lancamentos:
+             if isinstance(lancamento, Despesa):
+            #Pega o nome para saber em qual "caixa" guardar
+                 nome_categoria = lancamento.categoria.nome
+                 valor =  lancamento.valor
+
+                 if nome_categoria in totais:
+                    totais[nome_categoria] += valor
+                 else:
+                    totais[nome_categoria] = valor
+
+        return totais
+   
+   def despesas_formapagamento(self, mes, ano):
+        orcamento = self.buscar_orcamento(mes, ano)
+        if orcamento is None:
             return {}
         
         totais = {}
-        for despesa in orcamento.despesas:
-            cat = despesa.categoria
-            totais[cat] = totais.get(cat, 0) + despesa.valor
+
+        for lancamento in orcamento.lancamentos:
+             if isinstance(lancamento, Despesa):
+                 forma = lancamento.forma_de_pagamento
+                 valor = lancamento.valor
+
+                 if forma in totais:
+                    totais[forma] += valor
+                 else:
+                    totais[forma] = valor
+
         return totais
+   
+   def calcular_percentual_cat(self, mes, ano):
+        orcamento = self.buscar_orcamento(mes, ano)
 
-    def despesas_por_forma_pagamento(self, mes, ano):
-        """Agrupa despesas por forma de pagamento (crédito, débito, pix)."""
-        orcamento = self._buscar_orcamento(mes, ano)
-        if not orcamento:
-            return {}
-        
-        pagamentos = {}
-        for despesa in orcamento.despesas:
-            forma = despesa.forma_pagamento
-            pagamentos[forma] = pagamentos.get(forma, 0) + despesa.valor
-        return pagamentos
+        totais = self.total_categoria(mes, ano)
+        total_despesas = sum(totais.values())
+        if total_despesas == 0:
+           return {}
 
-    def calcular_percentuais_categoria(self, mes, ano):
-        """Calcula a porcentagem que cada categoria representa no total gasto."""
-        totais = self.total_por_categoria(mes, ano)
-        total_geral = sum(totais.values())
-        
-        if total_geral == 0:
-            return {}
-        
-        percentuais = {cat: (valor / total_geral) * 100 for cat, valor in totais.items()}
+        percentuais = {}
+
+        for categoria, valor in totais.items(): 
+           calculo = (valor / total_despesas) * 100
+           percentuais[categoria] = calculo
+
         return percentuais
 
-    def mes_mais_economico(self):
-        """Identifica o mês com o menor total de despesas entre os orçamentos cadastrados."""
-        if not self.orcamentos:
-            return None
-        
-        # Encontra o orçamento com a menor soma de despesas
-        melhor_orcamento = min(self.orcamentos, key=lambda o: sum(d.valor for d in o.despesas))
-        return {"mes": melhor_melhor_orcamento.mes, "ano": melhor_orcamento.ano}
+def mes_economico(self):
+   melhor_mes = None
+   menor_gasto = float('inf') #cria um número infinito para comparar
+   #loop em todos os orçamentos
+   for orcamento in self.lista_orcamentos:
+        total_despesas = orcamento.calcular_total_despesas()
+        if total_despesas < menor_gasto:
+            menor_gasto = total_despesas
+            melhor_mes = (orcamento.mes, orcamento.ano)
 
-    def comparativo_ultimos_3_meses(self, mes_atual, ano_atual):
-        """Cria um comparativo de gastos dos últimos 3 meses (incluindo o atual)."""
-        comparativo = {}
-        for i in range(3):
-            m, a = self._subtrair_meses(mes_atual + 1, ano_atual, i + 1) # Ajuste lógico
-            orcamento = self._buscar_orcamento(m, a)
-            if orcamento:
-                comparativo[f"{m}/{a}"] = sum(d.valor for d in orcamento.despesas)
-            else:
-                comparativo[f"{m}/{a}"] = 0
-        return comparativo
+   return melhor_mes, menor_gasto
+
+def _subtrair_meses(self, mes, ano, quantidade_meses):
+        # Transforma os meses em algo mutável
+        novo_mes = mes
+        novo_ano = ano
+        
+        # Loop para voltar 1 mês de cada vez
+        for _ in range(quantidade_meses):
+            novo_mes -= 1 # Diminui o mês
+            
+            if novo_mes == 0:
+                novo_mes = 12 # Volta para Dezembro
+                novo_ano -= 1 # Volta um ano
+        
+        return novo_mes, novo_ano
+
+def comparar_ultimos_3meses(self, mes_atual, ano_atual):
+   resultados = []
+   
+   for i in range(3):
+        mes_alvo, ano_alvo = self._subtrair_meses(mes_atual, ano_atual, i)
+        orcamento = self.buscar_orcamento(mes_alvo, ano_alvo)
+
+        if orcamento:
+           total = orcamento.calcular_total_despesas()
+        else:
+           total = 0
+
+        resultados.append((mes_alvo, ano_alvo, total))
+        
+   return resultados
+
+#CLASSE ANA KARLA
+
+class Alerta:
+    def __init__(self, tipo, mensagem, data, lancamento=None):
+        self.tipo = tipo
+        self.mensagem = mensagem
+        self.data = data
+        self.lancamento = lancamento
+
+    def __str__(self):
+        return f"[{self.data}] {self.tipo.upper()}: {self.mensagem}"
 
 #CLASSE MARIA IVANILDA
 
@@ -275,7 +319,6 @@ class Configuracoes:
     def __init__(self, filename="settings.json"):
         self.filename = filename
 
-        # Configurações padrão
         self.alerta_alto_gasto = 500.0               # valor em reais
         self.meses_comparativo = 3                   # quantidade de meses
         self.meta_economia_percentual = 10.0         # percentual (%)
@@ -284,77 +327,25 @@ class Configuracoes:
         self.validar_parametros()
    
     def validar_parametros(self):
-        if self.alerta_alto_gasto <= 0:
-            raise ValueError("O alerta de alto gasto deve ser maior que zero.")
+        if not (0<= self.meta_economia_percentual <=1):
+           print("Erro: Meta de economia percentual deve estar entre 0 e 1")
+           return False 
+        
+        if self.alerta_alto_gasto <0:
+           print("Erro: Alerta de alto gasto deve ser maior ou igual a 0")
+           return False
 
-        if self.meses_comparativo <= 0:
-            raise ValueError("Meses de comparativo deve ser maior que zero.")
+        return True
 
-        if not (0 <= self.meta_economia_percentual <= 100):
-            raise ValueError("Meta de economia deve estar entre 0 e 100%.")
+   valor_antigo = self.meta_economia_percentual
 
-    def alterar_meta_economia(self, nova_meta):
-        if not isinstance(nova_meta, (int, float)):
-            raise TypeError("A meta de economia deve ser numérica.")
+       self.meta_economia_percentual = nova_meta
+       if self.validar_parametros():
+          print(f"Meta de economia alterada de {valor_antigo:.2%} para {nova_meta:.2%}")
 
-        if nova_meta < 0 or nova_meta > 100:
-            raise ValueError("A meta de economia deve estar entre 0 e 100%.")
-
-        self.meta_economia_percentual = float(nova_meta)
+       else:
+          self.meta_economia_percentual = valor_antigo
+          print("Meta de economia não alterada devido a erro de validação.")
+          
 
 
-
-# ÁREA DE TESTES 
-
-if __name__ == "__main__":
-    print("\n INICIANDO SISTEMA FINANCEIRO")
-
-    # 1. CRIANDO AS CATEGORIAS
-    # Precisamos delas antes de criar os lançamentos
-    cat_salario = Categoria("Salário Mensal", "Receita")
-    cat_aluguel = Categoria("Aluguel/Moradia", "Despesa")
-    cat_lazer = Categoria("Lazer e Cinema", "Despesa")
-
-    # 2. CRIANDO O ORÇAMENTO DO MÊS
-    # Vamos simular Janeiro de 2025
-    meu_orcamento = OrcamentoMensal(1, 2025)
-    print(f"\n Orçamento criado para: {meu_orcamento.mes}/{meu_orcamento.ano}")
-
-    # 3. CRIANDO OS LANÇAMENTOS
-    # Ordem: Valor, Categoria, Data, Forma Pagamento, Status
-
-    # Uma Receita (Entrou dinheiro)
-    salario = Receita(5000.00, cat_salario, date(2025, 1, 5), "PIX", "PAGO")
-
-    # Uma Despesa (Saiu dinheiro - Aluguel)
-    aluguel = Despesa(1200.00, cat_aluguel, date(2025, 1, 10), "Boleto", "PAGO")
-
-    # Outra Despesa (Cinema - Ainda não pagou)
-    cinema = Despesa(50.00, cat_lazer, date(2025, 1, 20), "Crédito", "PENDENTE")
-
-    # 4. ADICIONANDO TUDO NA "CAIXA" DO ORÇAMENTO
-    meu_orcamento.adicionar_lancamento(salario)
-    meu_orcamento.adicionar_lancamento(aluguel)
-    meu_orcamento.adicionar_lancamento(cinema)
-
-    print(f"\n Lançamentos adicionados: {len(meu_orcamento.lancamentos)}")
-
-    # 5. TESTANDO A VISUALIZAÇÃO (__str__)
-    print("\n - Detalhe dos Lançamentos -")
-    for item in meu_orcamento.lancamentos:
-        print(item)
-
-    # 6. RELATÓRIO FINAL (Cálculos)
-    print("\n - RESUMO FINANCEIRO -")
-    
-    total_receitas = meu_orcamento.calcular_total_receitas()
-    total_despesas = meu_orcamento.calcular_total_despesas()
-    saldo_final = meu_orcamento.calcular_saldo()
-    
-    print(f"Total Receitas:  R$ {total_receitas:.2f}")
-    print(f"Total Despesas:  R$ {total_despesas:.2f}")
-    print(f"---------------------------")
-    print(f"SALDO FINAL:     R$ {saldo_final:.2f}")
-    
-    # 7. VERIFICANDO O ALERTA
-    print(f"Situação: {meu_orcamento.alerta_saldo_negativo()}")
