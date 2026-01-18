@@ -2,7 +2,59 @@ import json
 import os
 from datetime import date, datetime
 
-#CLASSE JUNIOR FERREIRA
+#CLASSE BEATRIZ BENIGNO
+
+class GerenciadorFinanças:
+    def __init__(self):
+        self.categorias = {}
+        self.orcamentos = []
+        self.alertas = []
+        self.arquivo_dados = "dados_financeiros.json"
+        self.carregar_dados()
+        self.relatorios = Relatorios(self.orcamentos)
+
+    def cadastrar_categoria(self, nome, tipo, limite=None, desc=""):
+        self.categorias[nome] = Categoria(nome, tipo, limite, desc)
+        self.salvar_dados()
+
+    def adicionar_lancamento(self, valor, nome_cat, data_str, forma, status, tipo_classe):
+        dt = datetime.strptime(data_str, "%d/%m/%Y").date()
+        cat = self.categorias.get(nome_cat)
+        if not cat: raise ValueError("Categoria não existe!")
+
+        novo = tipo_classe(valor, cat, dt, forma, status)
+        
+        orc = self.relatorios.buscar_orcamento(dt.month, dt.year)
+        if not orc:
+            orc = OrcamentoMensal(dt.month, dt.year)
+            self.orcamentos.append(orc)
+        
+        orc.adicionar_lancamento(novo)
+        
+        # Lógica de Alerta de Saldo Negativo
+        if orc.calcular_saldo() < 0:
+            self.alertas.append(Alerta("CRÍTICO", f"Saldo negativo em {dt.month}/{dt.year}", date.today()))
+            
+        self.salvar_dados()
+
+    def salvar_dados(self):
+        # Simplificação para exemplo de salvamento JSON
+        dados = {
+            "categorias": {n: {"tipo": c.tipo, "limite": c.limite_mensal} for n, c in self.categorias.items()}
+        }
+        with open(self.arquivo_dados, 'w') as f:
+            json.dump(dados, f)
+
+    def carregar_dados(self):
+        if os.path.exists(self.arquivo_dados):
+            with open(self.arquivo_dados, 'r') as f:
+                dados = json.load(f)
+                for n, c in dados.get("categorias", {}).items():
+                    self.categorias[n] = Categoria(n, c['tipo'], c['limite'])
+
+
+
+#CLASSE ALDEMIR FERREIRA
 class Lançamento:
 
   def __init__(self, valor, categoria, data, forma_de_pagamento, status):
@@ -11,9 +63,7 @@ class Lançamento:
     self.data = data
     self.forma_de_pagamento = forma_de_pagamento
     self.status = status
-    self.forma_de_pagamento = forma_de_pagamento 
-    self.status = status 
-
+    
   @property # Getter para o valor
   def valor(self):
     return self._valor
@@ -97,7 +147,7 @@ class Despesa(Lançamento):
         super().__init__(valor, categoria, data, forma_de_pagamento, status)
 
 
-#CLASSE JUNIOR FERREIRA
+#CLASSE ALDEMIR FERREIRA
 class Categoria:
 
   def __init__(self, nome, tipo, limite_mensal=None, descricao=""):
@@ -363,55 +413,7 @@ class Configuracoes:
         else:
             self.meta_economia_percentual = valor_antigo
           
-#CLASSE BEATRIZ BENIGNO
 
-class GerenciadorFinanças:
-    def __init__(self):
-        self.categorias = {}
-        self.orcamentos = []
-        self.alertas = []
-        self.arquivo_dados = "dados_financeiros.json"
-        self.carregar_dados()
-        self.relatorios = Relatorios(self.orcamentos)
-
-    def cadastrar_categoria(self, nome, tipo, limite=None, desc=""):
-        self.categorias[nome] = Categoria(nome, tipo, limite, desc)
-        self.salvar_dados()
-
-    def adicionar_lancamento(self, valor, nome_cat, data_str, forma, status, tipo_classe):
-        dt = datetime.strptime(data_str, "%d/%m/%Y").date()
-        cat = self.categorias.get(nome_cat)
-        if not cat: raise ValueError("Categoria não existe!")
-
-        novo = tipo_classe(valor, cat, dt, forma, status)
-        
-        orc = self.relatorios.buscar_orcamento(dt.month, dt.year)
-        if not orc:
-            orc = OrcamentoMensal(dt.month, dt.year)
-            self.orcamentos.append(orc)
-        
-        orc.adicionar_lancamento(novo)
-        
-        # Lógica de Alerta de Saldo Negativo
-        if orc.calcular_saldo() < 0:
-            self.alertas.append(Alerta("CRÍTICO", f"Saldo negativo em {dt.month}/{dt.year}", date.today()))
-            
-        self.salvar_dados()
-
-    def salvar_dados(self):
-        # Simplificação para exemplo de salvamento JSON
-        dados = {
-            "categorias": {n: {"tipo": c.tipo, "limite": c.limite_mensal} for n, c in self.categorias.items()}
-        }
-        with open(self.arquivo_dados, 'w') as f:
-            json.dump(dados, f)
-
-    def carregar_dados(self):
-        if os.path.exists(self.arquivo_dados):
-            with open(self.arquivo_dados, 'r') as f:
-                dados = json.load(f)
-                for n, c in dados.get("categorias", {}).items():
-                    self.categorias[n] = Categoria(n, c['tipo'], c['limite'])
 
 #CLASSE MARIA IVANILDA
 
