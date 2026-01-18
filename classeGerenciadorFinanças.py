@@ -47,3 +47,8 @@ class GerenciadorFinanças:
             print(f"Erro: Alto gasto detectado: (R${valor:.2f})")
             
         self.salvar_dados()
+
+    def identificar_mes_economico(self):
+        if not self.orcamentos: return "Nenhum dado."
+        melhor = min(self.orcamentos.values(), key=lambda o: o.calcular_total_despesas())
+        return f"{melhor.mes:02d}/{melhor.ano}"
