@@ -11,6 +11,8 @@ class Lançamento:
     self.data = data
     self.forma_de_pagamento = forma_de_pagamento
     self.status = status
+    self.forma_de_pagamento = forma_de_pagamento 
+    self.status = status 
 
   @property # Getter para o valor
   def valor(self):
@@ -34,7 +36,7 @@ class Lançamento:
 
   @property # Getter para a forma_de_pagamento
   def forma_de_pagamento(self):
-     return self.forma_de_pagamento
+     return self._forma_de_pagamento
   
   @forma_de_pagamento.setter # Setter para a forma_de_pagamento
   def forma_de_pagamento(self, nova_forma):
@@ -48,7 +50,7 @@ class Lançamento:
 
   @property # Getter para o status
   def status(self):
-    return self.status
+    return self._status
   
   @status.setter # Setter para o status
   def status(self, novo_status):
@@ -353,15 +355,13 @@ class Configuracoes:
 
         return True
 
-   valor_antigo = self.meta_economia_percentual
-
-       self.meta_economia_percentual = nova_meta
-       if self.validar_parametros():
-          print(f"Meta de economia alterada de {valor_antigo:.2%} para {nova_meta:.2%}")
-
-       else:
-          self.meta_economia_percentual = valor_antigo
-          print("Meta de economia não alterada devido a erro de validação.")
+   def atualizar_meta(self, nova_meta): # Adicionado nome da função
+        valor_antigo = self.meta_economia_percentual
+        self.meta_economia_percentual = nova_meta
+        if self.validar_parametros():
+            print(f"Meta alterada de {valor_antigo:.0%} para {nova_meta:.0%}")
+        else:
+            self.meta_economia_percentual = valor_antigo
           
 #CLASSE BEATRIZ BENIGNO
 
