@@ -272,20 +272,20 @@ class Relatorios:
            percentuais[categoria] = calculo
 
         return percentuais
+     
+   def mes_economico(self):
+        melhor_mes = None
+        menor_gasto = float('inf') #cria um número infinito para comparar
+        #loop em todos os orçamentos
+        for orcamento in self.lista_orcamentos:
+                total_despesas = orcamento.calcular_total_despesas()
+                if total_despesas < menor_gasto:
+                    menor_gasto = total_despesas
+                    melhor_mes = (orcamento.mes, orcamento.ano)
 
-def mes_economico(self):
-   melhor_mes = None
-   menor_gasto = float('inf') #cria um número infinito para comparar
-   #loop em todos os orçamentos
-   for orcamento in self.lista_orcamentos:
-        total_despesas = orcamento.calcular_total_despesas()
-        if total_despesas < menor_gasto:
-            menor_gasto = total_despesas
-            melhor_mes = (orcamento.mes, orcamento.ano)
+        return melhor_mes, menor_gasto
 
-   return melhor_mes, menor_gasto
-
-def _subtrair_meses(self, mes, ano, quantidade_meses):
+   def _subtrair_meses(self, mes, ano, quantidade_meses):
         # Transforma os meses em algo mutável
         novo_mes = mes
         novo_ano = ano
@@ -300,21 +300,22 @@ def _subtrair_meses(self, mes, ano, quantidade_meses):
         
         return novo_mes, novo_ano
 
-def comparar_ultimos_3meses(self, mes_atual, ano_atual):
-   resultados = []
+   def comparar_ultimos_3meses(self, mes_atual, ano_atual):
+    
+    resultados = []
    
-   for i in range(3):
-        mes_alvo, ano_alvo = self._subtrair_meses(mes_atual, ano_atual, i)
-        orcamento = self.buscar_orcamento(mes_alvo, ano_alvo)
+    for i in range(3):
+            mes_alvo, ano_alvo = self._subtrair_meses(mes_atual, ano_atual, i)
+            orcamento = self.buscar_orcamento(mes_alvo, ano_alvo)
 
-        if orcamento:
-           total = orcamento.calcular_total_despesas()
-        else:
-           total = 0
+            if orcamento:
+               total = orcamento.calcular_total_despesas()
+            else:
+               total = 0
 
-        resultados.append((mes_alvo, ano_alvo, total))
+            resultados.append((mes_alvo, ano_alvo, total))
         
-   return resultados
+    return resultados
 
 #CLASSE ANA KARLA
 
