@@ -11,6 +11,9 @@
 
 ### Uma ferramenta simples e eficiente para gerenciar sua vida financeira, permitindo o acompanhamento detalhado de entradas e saídas com relatórios automáticos e alerta de gastos.
 
+##### PARA USAR O GERENCIADOR, VÁ EM SISTEMA.PY 
+
+
 ##### Classes: Gerenciador de Finanças, Cadastro de Categorias, Lançamento de Receitas e Despesas, Orçamento Mensal, Relatórios e Estatísticas, Configuracoes, Alertas.
 
 -
