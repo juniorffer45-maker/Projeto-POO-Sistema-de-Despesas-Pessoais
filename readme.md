@@ -11,7 +11,7 @@
 
 ### Uma ferramenta simples e eficiente para gerenciar sua vida financeira, permitindo o acompanhamento detalhado de entradas e saídas com relatórios automáticos e alerta de gastos.
 
-##### PARA USAR O GERENCIADOR, VÁ EM SISTEMA.PY 
+##### PARA USAR O GERENCIADOR, VÁ EM SISTEMA.PY - Copie e cole no seu editor e coloque para executar.
 
 .
 .
